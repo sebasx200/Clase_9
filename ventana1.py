@@ -5,7 +5,7 @@ from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QMainWindow, QLabel, QDesktopWidget, QHBoxLayout, QApplication, QFormLayout, QLineEdit, \
     QPushButton, QDialog, QDialogButtonBox, QVBoxLayout
 from PyQt5 import QtGui, QtCore
-
+from cliente import Cliente
 
 class Ventana1(QMainWindow):
 
@@ -53,7 +53,7 @@ class Ventana1(QMainWindow):
                               "\nen el formulario de abajo. Los campos marcados"
                               "\ncon asterisco * son obligatorios")
         self.letrero2.setFont(QFont("Comic Sans MS", 12))
-        self.letrero1.setStyleSheet("color: #000080;")
+        self.letrero2.setStyleSheet("color: #000080;")
         self.ladoIzquierdo.addRow(self.letrero2)
 
         self.nombreCompleto = QLineEdit()
@@ -89,14 +89,14 @@ class Ventana1(QMainWindow):
         self.ladoIzquierdo.addRow("Correo electrónico *", self.correo)
 
         self.botonRegistrar = QPushButton("Registrar")
-        self.botonRegistrar.setFixedWidth(90)
+        self.botonRegistrar.setFixedWidth(120)
         self.botonRegistrar.setFont(QFont("Comic Sans MS", 12))
         self.botonRegistrar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
 
         self.botonRegistrar.clicked.connect(self.accion_botonRegistrar)
 
         self.botonLimpiar = QPushButton("Limpiar")
-        self.botonLimpiar.setFixedWidth(90)
+        self.botonLimpiar.setFixedWidth(100)
         self.botonLimpiar.setFont(QFont("Comic Sans MS", 12))
         self.botonLimpiar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
 
@@ -176,7 +176,7 @@ class Ventana1(QMainWindow):
         self.botonBuscar.clicked.connect(self.accion_botonBuscar)
 
         self.botonRecuperar = QPushButton("Recuperar")
-        self.botonRecuperar.setFixedWidth(90)
+        self.botonRecuperar.setFixedWidth(120)
         self.botonRecuperar.setFont(QFont("Comic Sans MS", 12))
         self.botonRecuperar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
 
@@ -191,8 +191,6 @@ class Ventana1(QMainWindow):
 
         self.fondo.setLayout(self.horizontal)
 
-    def accion_botonRegistrar(self):
-
         self.ventanaDialogo = QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.ventanaDialogo.resize(300, 150)
 
@@ -202,7 +200,7 @@ class Ventana1(QMainWindow):
         self.opcionesBotones = QDialogButtonBox(self.botonAceptar)
         self.opcionesBotones.accepted.connect(self.ventanaDialogo.accept)
 
-       # ----------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------
 
         self.ventanaDialogo.setWindowTitle("Validar número de empleados")
         self.ventanaDialogo.setWindowModality(Qt.ApplicationModal)
@@ -219,6 +217,9 @@ class Ventana1(QMainWindow):
         self.ventanaDialogo.setLayout(self.vertical)
 
         self.datosCorrectos = True
+
+    def accion_botonRegistrar(self):
+
 
         if (self.contrasena.text() != self.contrasena2.text()):
 
@@ -260,10 +261,10 @@ class Ventana1(QMainWindow):
                                   + self.documento.text() + ";"
                                   + self.correo.text() + ";"
                                   + self.pregunta1.text() + ";"
-                                  + self.pregunta2.text() + ";"
-                                  + self.pregunta3.text() + ";"
                                   + self.Respuestapregunta1.text() + ";"
+                                  + self.pregunta2.text() + ";"
                                   + self.Respuestapregunta2.text() + ";"
+                                  + self.pregunta3.text() + ";"
                                   + self.Respuestapregunta3.text() + "\n"
                                   , encoding = 'UTF-8'))
             self.file.close()
@@ -293,7 +294,109 @@ class Ventana1(QMainWindow):
         self.Respuestapregunta2.setText('')
         self.Respuestapregunta3.setText('')
     def accion_botonBuscar(self):
-        pass
+        # Establecemos titulo de ventana
+        self.ventanaDialogo.setWindowTitle("Buscar preguntas de validacion")
+
+        # validar que se haya ingresado el documento
+        if (
+                self.documento.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            # Escribimos el texto explicativo
+            self.mensaje.setText("Si va a buscar las preguntas"
+                                 " para recuperar la contraseña."
+                                 "\nDebe primero, ingresar el documento.")
+
+            # Hacemos que la ventana dialogo se vea
+            self.ventanaDialogo.exec_()
+
+        #validamos si el dato es numerico
+        if(
+            not self.documento.text().isnumeric()
+        ):
+            self.datosCorrectos = False
+
+            # Escribimos el texto explicativo
+            self.mensaje.setText("El documento debe ser numerico."
+                                 "\nNo ingrese letras "
+                                 "ni caracteres especiales. ")
+
+            # Hacemos que la ventana dialogo se vea
+            self.ventanaDialogo.exec_()
+
+            #limpiamos el campo de documento
+            self.documento.setText('')
+
+        # si los datos estan correctos
+        if(
+            self.datosCorrectos
+        ):
+            #abrimos el archivo en modo lectura.
+            self.file = open('datos/clientes.txt','rb')
+
+            # lista vacia para guardar los usuarios
+            usuarios = []
+
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+
+                #obtenemos del string una lista con 11 datos separados por ;
+                lista = linea.split(";")
+                # se para si ya no hay mas registros en el archivo
+                if linea == '':
+                    break
+
+                # creamos un objeto tipo cliente llamado u
+                u = Cliente(
+                    lista[0],
+                    lista[1],
+                    lista[2],
+                    lista[3],
+                    lista[4],
+                    lista[5],
+                    lista[6],
+                    lista[7],
+                    lista[8],
+                    lista[9],
+                    lista[10],
+                )
+
+                # METEMOS EL OBJETO EN LA LISTA DE USUARIOS
+                usuarios.append(u)
+
+            # cerramos el archivo
+            self.file.close()
+
+            # En este punto tenemos la lista usuarios con todos los usuarios
+
+            # variable para controlar si existe el documento
+            existeDocumento = False
+
+            #Buscamos en la lista usuario por usuario si existe la cedula
+            for u in usuarios:
+                # comparamos el dato ingresado
+                # si corresponde con el documento ,es el usuario correcto
+                if u.documento == self.documento.text():
+                    # mostramos las preguntas en el formulario
+                    self.pregunta1.setText(u.pregunta1)
+                    self.pregunta2.setText(u.pregunta2)
+                    self.pregunta3.setText(u.pregunta3)
+                    # indicamos que encontramos el documento
+                    existeDocumento = True
+
+                    #paramos el for
+                    break
+            # sino existe este documento
+            if(
+                not existeDocumento
+            ):
+                #escribimos texto explicativo
+                self.mensaje.setText("No existe un usuario con este documento:\n"
+                                     + self.documento.text())
+
+                # hacemos que la ventana de dialogo se vea
+                self.ventanaDialogo.exec_()
 
     def accion_botonRecuperar(self):
         pass
