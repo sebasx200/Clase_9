@@ -3,3 +3,4 @@ a;a;a;a;a;a;a;a;a;a;a
 juan pablo;juan05chamo;12345678;1015186914;juanputas@gmail.com;donde estudio;edad;cuanto pesa el gordo;poli;18;1 tonelada
 jose martinez;jose0620;2005;1033336462;josechupa@gmail.com;edad;nombre mama;nombre gato;20;julia;manolo
 sebastian palacio;sebasx200;2023;1000762620;sebastio@gmail.com;jj es gay;si;yoan le gusta el pene;si;el gordo anda a paso doble;tambien
+Juan Jose David;jjbonz;20232320;7654321;jjbonz2023@gmail.com;nombre de mi padre;luis;años de mi perrita;8;cuantos hermanos tengo;5

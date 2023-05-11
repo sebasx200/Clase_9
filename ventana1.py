@@ -180,7 +180,7 @@ class Ventana1(QMainWindow):
         self.botonRecuperar.setFont(QFont("Comic Sans MS", 12))
         self.botonRecuperar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
 
-        self.botonLimpiar.clicked.connect(self.accion_botonRecuperar)
+        self.botonRecuperar.clicked.connect(self.accion_botonRecuperar)
 
         self.ladoDerecho.addRow(self.botonBuscar, self.botonRecuperar)
 
@@ -190,6 +190,8 @@ class Ventana1(QMainWindow):
         # Poner al final el establecimiento del layout
 
         self.fondo.setLayout(self.horizontal)
+
+    #------------------CONSTRUCCION DE LA VENTANA EMERGENTE--------------------
 
         self.ventanaDialogo = QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
         self.ventanaDialogo.resize(300, 150)
@@ -237,7 +239,6 @@ class Ventana1(QMainWindow):
         self.nombreCompleto.text() == ''
         or self.usuario.text() == ''
         or self.contrasena.text() == ''
-        or self.contrasena2.text() == ''
         or self.documento.text() == ''
         or self.correo.text() == ''
         or self.pregunta1.text() == ''
@@ -403,7 +404,114 @@ class Ventana1(QMainWindow):
                 self.ventanaDialogo.exec_()
 
     def accion_botonRecuperar(self):
-        pass
+
+        self.datosCorrectos = True
+
+        self.ventanaDialogo.setWindowTitle("Recuperar contraseña")
+
+        if(
+            self.pregunta1.text() == '' or
+            self.pregunta2.text() == '' or
+            self.pregunta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            self.mensaje.setText("Para recuperar la contraseña debe"
+                                 "\nbuscar las preguntas de verificacion"
+                                 "\n\nPrimero ingrese su documento y luego"
+                                 "\npresione el boton 'Buscar'")
+
+            self.ventanaDialogo.exec_()
+
+        if (
+                self.pregunta1.text() != '' and
+                self.Respuestapregunta1.text() == '' and
+                self.pregunta2.text() != '' and
+                self.Respuestapregunta2.text() == '' and
+                self.pregunta3.text() != '' and
+                self.Respuestapregunta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            self.mensaje.setText("Para recuperar la contraseña debe"
+                                 "\ningresar las respuestas a cada pregunta")
+
+            self.ventanaDialogo.exec_()
+
+        if(
+            self.datosCorrectos
+        ):
+            self.file = open('datos/clientes.txt', 'rb')
+
+            usuarios = []
+
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+
+                #obtenemos del string una lista con 11 datos separados por ;
+                lista = linea.split(";")
+                # se para si ya no hay mas registros en el archivo
+                if linea == '':
+                    break
+
+                # creamos un objeto tipo cliente llamado u
+                u = Cliente(
+                    lista[0],
+                    lista[1],
+                    lista[2],
+                    lista[3],
+                    lista[4],
+                    lista[5],
+                    lista[6],
+                    lista[7],
+                    lista[8],
+                    lista[9],
+                    lista[10],
+                )
+
+                # METEMOS EL OBJETO EN LA LISTA DE USUARIOS
+                usuarios.append(u)
+
+            # cerramos el archivo
+            self.file.close()
+
+            existeDocumento = False
+
+            resp1 = ''
+            resp2 = ''
+            resp3 = ''
+            contra = ''
+
+            for u in usuarios:
+                if u.documento == self.documento.text():
+                    existeDocumento = True
+                    resp1 = u.respuesta1
+                    resp2 = u.respuesta2
+                    resp3 = u.respuesta3
+                    contra = u.contraseña
+                    break
+
+            if(
+                self.Respuestapregunta1.text().lower().strip() == resp1.lower().strip() and
+                self.Respuestapregunta2.text().lower().strip() == resp2.lower().strip() and
+                self.Respuestapregunta3.text().lower().strip() == resp3.lower().strip()
+            ):
+                self.accion_botonLimpiar()
+
+                self.mensaje.setText("Contraseña: " + contra)
+
+                self.ventanaDialogo.exec_()
+            else:
+                self.mensaje.setText("Las respuestas son incorrectas "
+                                     "\npara estas preguntas de recuperacion"
+                                     "\nVuelva a intentarlo.")
+
+                self.ventanaDialogo.exec_()
+
+
+
+
+
 
 if __name__ == '__main__':
 
