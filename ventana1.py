@@ -220,6 +220,7 @@ class Ventana1(QMainWindow):
 
     def accion_botonRegistrar(self):
 
+        self.datosCorrectos = True
 
         if (self.contrasena.text() != self.contrasena2.text()):
 
@@ -294,6 +295,9 @@ class Ventana1(QMainWindow):
         self.Respuestapregunta2.setText('')
         self.Respuestapregunta3.setText('')
     def accion_botonBuscar(self):
+
+        self.datosCorrectos = True
+
         # Establecemos titulo de ventana
         self.ventanaDialogo.setWindowTitle("Buscar preguntas de validacion")
 
