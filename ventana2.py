@@ -1,6 +1,12 @@
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QLabel, QVBoxLayout
+import sys
+
+from PyQt5.QtGui import QPixmap, QFont
+from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QLabel, QVBoxLayout, QScrollArea, QWidget, QGridLayout, \
+    QButtonGroup, QPushButton, QApplication
 from PyQt5 import QtGui
+
+from cliente import Cliente
+import math
 
 
 class Ventana2(QMainWindow):
@@ -36,10 +42,134 @@ class Ventana2(QMainWindow):
 
         self.vertical = QVBoxLayout()
 
-        #11-05-2023
+        self.letrero1 = QLabel()
 
+        self.letrero1.setText("                      Usuarios Registrados")
+
+        self.letrero1.setFont(QFont("Comic Sans MS", 20))
+
+        self.letrero1.setStyleSheet(" color: #000000;")
+
+        self.vertical.addWidget(self.letrero1)
+
+        self.vertical.addStretch()
+
+        self.scrollArea = QScrollArea()
+
+        self.scrollArea.setStyleSheet("background-color : transparent;")
+
+        self.scrollArea.setWidgetResizable(True)
+
+        self.contenedora = QWidget()
+
+        self.cuadricula = QGridLayout(self.contenedora)
+
+        self.scrollArea.setWidget(self.contenedora)
+
+        self.vertical.addWidget(self.scrollArea)
+
+        self.file = open('datos/clientes.txt', 'rb')
+
+        self.usuarios = []
+
+        while self.file:
+            linea = self.file.readline().decode('UTF-8')
+
+            # obtenemos del string una lista con 11 datos separados por ;
+            lista = linea.split(";")
+            # se para si ya no hay mas registros en el archivo
+            if linea == '':
+                break
+
+            # creamos un objeto tipo cliente llamado u
+            u = Cliente(
+                lista[0],
+                lista[1],
+                lista[2],
+                lista[3],
+                lista[4],
+                lista[5],
+                lista[6],
+                lista[7],
+                lista[8],
+                lista[9],
+                lista[10],
+            )
+
+            # METEMOS EL OBJETO EN LA LISTA DE USUARIOS
+            self.usuarios.append(u)
+
+        # cerramos el archivo
+        self.file.close()
+
+        # En este punto tenemos la lista usuarios con todos los usuarios
+
+        self.numeroUsuarios = len(self.usuarios)
+
+        self.contador = 0
+
+        self.elementosPorColumna = 2
+
+        self.numeroFilas = math.ceil(self.numeroUsuarios / self.elementosPorColumna) + 1
+
+        self.botones = QButtonGroup()
+
+        self.botones.setExclusive(False)
+
+        for fila in range(1, self.numeroFilas):
+            for columna in range(1, self.elementosPorColumna + 1):
+
+                if self.contador < self.numeroUsuarios:
+
+                    self.ventanaAuxiliar = QWidget()
+
+                    self.ventanaAuxiliar.setFixedWidth(200)
+                    self.ventanaAuxiliar.setFixedHeight(100)
+
+                    self.verticalCuadricula = QVBoxLayout()
+
+                    self.botonAccion = QPushButton(self.usuarios[self.contador].documento)
+
+                    self.botonAccion.setFixedWidth(150)
+
+                    self.botonAccion.setStyleSheet("background-color : #000000;"
+                                                   "color : #FFFFFF;"
+                                                   "padding: 10 px;"
+                                                   )
+
+                    self.verticalCuadricula.addWidget(self.botonAccion)
+
+                    self.botones.addButton(self.botonAccion, int(self.usuarios[self.contador].documento))
+
+                    self.verticalCuadricula.addStretch()
+
+                    self.ventanaAuxiliar.setLayout(self.verticalCuadricula)
+
+                    self.cuadricula.addWidget(self.ventanaAuxiliar, fila, columna)
+
+                    self.contador += 1
+
+        self.botones.idClicked.connect(self.metodo_accionBotones)
 
 
 
         #-----------OJO PONER AL FINAL QUE BENDICION------------
+
         self.fondo.setLayout(self.vertical)
+
+    def metodo_accionBotones(self, documento):
+        print(documento)
+
+if __name__ == '__main__':
+
+    # hacer que la aplicacion se genere
+    app = QApplication(sys.argv)
+
+    # crear un objeto de tipo Ventana1 con el nombre ventana1
+    ventana2 = Ventana2()
+
+    # hacer que el objeto ventana1 se vea
+    ventana2.show()
+
+    # codigo para terminar la aplicacion
+    sys.exit(app.exec_())
