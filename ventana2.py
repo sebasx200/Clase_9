@@ -151,6 +151,19 @@ class Ventana2(QMainWindow):
 
         self.botones.idClicked.connect(self.metodo_accionBotones)
 
+        self.botonVolver = QPushButton("Volver")
+
+        self.botonVolver.setFixedWidth(90)
+
+        self.botonVolver.setStyleSheet("background-color : #000000;"
+                                                   "color : #FFFFFF;"
+                                                   "padding: 10 px;"
+                                                   )
+
+        self.botonVolver.clicked.connect(self.metodo_botonVolver)
+
+        self.vertical.addWidget(self.botonVolver)
+
 
 
         #-----------OJO PONER AL FINAL QUE BENDICION------------
@@ -159,6 +172,10 @@ class Ventana2(QMainWindow):
 
     def metodo_accionBotones(self, documento):
         print(documento)
+
+    def metodo_botonVolver(self):
+        self.hide()
+        self.ventanaAnterior.show()
 
 if __name__ == '__main__':
 
