@@ -4,7 +4,7 @@ from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QLabel, QVBoxLayout, QScrollArea, QWidget, QGridLayout, \
     QButtonGroup, QPushButton, QApplication
 from PyQt5 import QtGui
-
+from ventana3 import Ventana3
 from cliente import Cliente
 import math
 
@@ -19,8 +19,8 @@ class Ventana2(QMainWindow):
         self.setWindowTitle("Usuarios Registrados")
 
         self.setWindowIcon(QtGui.QIcon("imagenes/descarga.png"))
-        self.ancho = 1000
-        self.alto = 600
+        self.ancho = 1200
+        self.alto = 800
 
         self.resize(self.ancho, self.alto)
 
@@ -151,9 +151,22 @@ class Ventana2(QMainWindow):
 
         self.botones.idClicked.connect(self.metodo_accionBotones)
 
+        self.botonFormaTabular = QPushButton("Forma Tabular")
+
+        self.botonFormaTabular.setFixedWidth(125)
+
+        self.botonFormaTabular.setStyleSheet("background-color : #000000;"
+                                       "color : #FFFFFF;"
+                                       "padding: 10 px;"
+                                       )
+
+        self.botonFormaTabular.clicked.connect(self.metodo_botonFormaTabular)
+
+        self.vertical.addWidget(self.botonFormaTabular)
+
         self.botonVolver = QPushButton("Volver")
 
-        self.botonVolver.setFixedWidth(90)
+        self.botonVolver.setFixedWidth(100)
 
         self.botonVolver.setStyleSheet("background-color : #000000;"
                                                    "color : #FFFFFF;"
@@ -176,6 +189,11 @@ class Ventana2(QMainWindow):
     def metodo_botonVolver(self):
         self.hide()
         self.ventanaAnterior.show()
+
+    def metodo_botonFormaTabular(self):
+        self.hide()
+        self.ventana3 = Ventana3(self)
+        self.ventana3.show()
 
 if __name__ == '__main__':
 
