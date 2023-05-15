@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QLabel, QDesktopWidget, QHBoxLayout, QA
     QPushButton, QDialog, QDialogButtonBox, QVBoxLayout
 from PyQt5 import QtGui, QtCore
 from cliente import Cliente
+from ventana2 import Ventana2
 
 class Ventana1(QMainWindow):
 
@@ -16,7 +17,7 @@ class Ventana1(QMainWindow):
 
         self.setWindowIcon(QtGui.QIcon("imagenes/descarga.png"))
         self.ancho = 1200
-        self.alto = 600
+        self.alto = 800
 
         self.resize(self.ancho, self.alto)
 
@@ -29,7 +30,7 @@ class Ventana1(QMainWindow):
         self.setFixedHeight(self.alto)
 
         self.fondo = QLabel(self)
-        self.imagenFondo = QPixmap("imagenes/fondoventana.jpg")
+        self.imagenFondo = QPixmap("imagenes/fondo.jpg")
         self.fondo.setPixmap(self.imagenFondo)
         self.fondo.setScaledContents(True)
         self.resize(self.imagenFondo.width(), self.imagenFondo.height())
@@ -45,7 +46,7 @@ class Ventana1(QMainWindow):
 
         self.letrero1 = QLabel("Información del cliente")
         self.letrero1.setFont(QFont("Comic Sans MS", 20))
-        self.letrero1.setStyleSheet("color: #000080;")
+        self.letrero1.setStyleSheet("color: #FFFFFF;")
         self.ladoIzquierdo.addRow(self.letrero1)
 
         self.letrero2 = QLabel()
@@ -53,7 +54,7 @@ class Ventana1(QMainWindow):
                               "\nen el formulario de abajo. Los campos marcados"
                               "\ncon asterisco * son obligatorios")
         self.letrero2.setFont(QFont("Comic Sans MS", 12))
-        self.letrero2.setStyleSheet("color: #000080;")
+        self.letrero2.setStyleSheet("color: #FFFFFF;")
         self.ladoIzquierdo.addRow(self.letrero2)
 
         self.nombreCompleto = QLineEdit()
@@ -91,14 +92,14 @@ class Ventana1(QMainWindow):
         self.botonRegistrar = QPushButton("Registrar")
         self.botonRegistrar.setFixedWidth(120)
         self.botonRegistrar.setFont(QFont("Comic Sans MS", 12))
-        self.botonRegistrar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
+        self.botonRegistrar.setStyleSheet("background-color: #000000; color: #E6E6FA; padding: 5px;")
 
         self.botonRegistrar.clicked.connect(self.accion_botonRegistrar)
 
         self.botonLimpiar = QPushButton("Limpiar")
         self.botonLimpiar.setFixedWidth(100)
         self.botonLimpiar.setFont(QFont("Comic Sans MS", 12))
-        self.botonLimpiar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
+        self.botonLimpiar.setStyleSheet("background-color: #000000; color: #E6E6FA; padding: 5px;")
 
         self.botonLimpiar.clicked.connect(self.accion_botonLimpiar)
 
@@ -113,7 +114,7 @@ class Ventana1(QMainWindow):
 
         self.letrero3 = QLabel("Recuperar contraseña")
         self.letrero3.setFont(QFont("Comic Sans MS", 20))
-        self.letrero3.setStyleSheet("color: #000080;")
+        self.letrero3.setStyleSheet("color: #FFFFFF;")
         self.ladoDerecho.addRow(self.letrero3)
 
         self.letrero4 = QLabel()
@@ -121,7 +122,7 @@ class Ventana1(QMainWindow):
                               "\nla contraseña. Los campos marcados"
                               "\ncon asterisco * son obligatorios.")
         self.letrero4.setFont(QFont("Comic Sans MS", 12))
-        self.letrero4.setStyleSheet("color: #000080;")
+        self.letrero4.setStyleSheet("color: #FFFFFF;")
         self.ladoDerecho.addRow(self.letrero4)
 
 # ---------PREGUNTA 1-------------------------------------------
@@ -171,20 +172,31 @@ class Ventana1(QMainWindow):
         self.botonBuscar = QPushButton("Buscar")
         self.botonBuscar.setFixedWidth(90)
         self.botonBuscar.setFont(QFont("Comic Sans MS", 12))
-        self.botonBuscar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
+        self.botonBuscar.setStyleSheet("background-color: #000000; color: #E6E6FA; padding: 5px;")
 
         self.botonBuscar.clicked.connect(self.accion_botonBuscar)
 
         self.botonRecuperar = QPushButton("Recuperar")
         self.botonRecuperar.setFixedWidth(120)
         self.botonRecuperar.setFont(QFont("Comic Sans MS", 12))
-        self.botonRecuperar.setStyleSheet("background-color: #6495ED; color: #E6E6FA; padding: 5px;")
+        self.botonRecuperar.setStyleSheet("background-color: #000000; color: #E6E6FA; padding: 5px;")
 
         self.botonRecuperar.clicked.connect(self.accion_botonRecuperar)
 
         self.ladoDerecho.addRow(self.botonBuscar, self.botonRecuperar)
 
+        self.botonContinuar = QPushButton("Continuar")
+        self.botonContinuar.setFixedWidth(120)
+        self.botonContinuar.setFont(QFont("Comic Sans MS", 12))
+        self.botonContinuar.setStyleSheet("background-color: #000000; color: #E6E6FA; padding: 5px;")
+
+        self.botonContinuar.clicked.connect(self.accion_botonContinuar)
+
+        self.ladoDerecho.addRow(self.botonContinuar)
+
         self.horizontal.addLayout(self.ladoDerecho)
+
+
 
 
         # Poner al final el establecimiento del layout
@@ -507,6 +519,12 @@ class Ventana1(QMainWindow):
                                      "\nVuelva a intentarlo.")
 
                 self.ventanaDialogo.exec_()
+
+    def accion_botonContinuar(self):
+        self.hide()
+        self.ventana2 = Ventana2(self)
+        self.ventana2.show()
+
 
 
 
