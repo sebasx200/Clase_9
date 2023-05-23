@@ -1,17 +1,17 @@
 from PyQt5.QtGui import QPixmap, QFont
 from PyQt5.QtWidgets import QMainWindow, QDesktopWidget, QLabel, QHBoxLayout, QFormLayout, QLineEdit, QPushButton, \
     QDialog, QDialogButtonBox, QVBoxLayout
-from PyQt5 import QtGui,QtCore
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import Qt
 from cliente import Cliente
 
 class Ventana4(QMainWindow):
     def __init__(self, anterior, documento):
-        super(Ventana4, self).__init__(anterior)
+        super(Ventana4, self).__init__(None)
 
         self.ventanaAnterior = anterior
 
-        self.documento = documento
+        self.Documento = documento
 
         self.setWindowTitle("Editar usuario")
 
@@ -202,15 +202,6 @@ class Ventana4(QMainWindow):
 
         self.horizontal.addLayout(self.ladoDerecho)
 
-
-
-
-
-
-
-
-
-
         # OJO PONER AL FINAL JJ NIÑO LADRON
         self.fondo.setLayout(self.horizontal)
 
@@ -227,7 +218,6 @@ class Ventana4(QMainWindow):
 
     # ----------------------------------------------------------------------------
 
-        self.ventanaDialogo.setWindowTitle("Validar número")
         self.ventanaDialogo.setWindowModality(Qt.ApplicationModal)
 
         self.vertical = QVBoxLayout()
@@ -242,8 +232,6 @@ class Ventana4(QMainWindow):
         self.ventanaDialogo.setLayout(self.vertical)
 
         self.cargar_datos()
-
-
 
     def accion_botonEditar(self):
         pass
@@ -307,7 +295,7 @@ class Ventana4(QMainWindow):
         existeDocumento = False
 
         for u in usuarios:
-            if int(u.documento) == self.documento:
+            if int(u.documento) == self.Documento:
                 self.nombreCompleto.setText(u.nombreCompleto)
                 self.nombreCompleto.setReadOnly(True)
                 self.usuario.setText(u.usuario)
@@ -322,7 +310,6 @@ class Ventana4(QMainWindow):
                 self.Respuestapregunta2.setText(u.respuesta2)
                 self.pregunta3.setText(u.pregunta3)
                 self.Respuestapregunta3.setText(u.respuesta3)
-
                 existeDocumento = True
                 break
 
@@ -331,7 +318,7 @@ class Ventana4(QMainWindow):
         ):
             # escribimos texto explicativo
             self.mensaje.setText("No existe un usuario con este documento:\n"
-                                 + str(self.documento))
+                                 + str(self.Documento))
 
             # hacemos que la ventana de dialogo se vea
             self.ventanaDialogo.exec_()

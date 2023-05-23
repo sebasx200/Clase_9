@@ -187,7 +187,7 @@ class Ventana2(QMainWindow):
     def metodo_accionBotones(self, documento):
         #print(documento)
         self.hide()
-        self.ventana4 = Ventana4(self,documento)
+        self.ventana4 = Ventana4(self, documento)
         self.ventana4.show()
 
     def metodo_botonVolver(self):
