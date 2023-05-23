@@ -1,2 +1,3 @@
 Juan Jose David;jjbonz;20232320;7654321;jjbonz2023@gmail.com;nombre de mi padre;luis;años de mi perrita;8;cuantos hermanos tengo;5
 Juan Pablo Angel;juan05angel;1234;1015186914;juanpablo@gmail.com;nombre de papa;diego;edad;18;donde estudio;poli
+MARIO USUGA;mariou;1290;1033336462;usugam@gmail.com;nombre esposa;ana;edad de mi marrano;3;marca de mi coche;bmw
