@@ -234,7 +234,141 @@ class Ventana4(QMainWindow):
         self.cargar_datos()
 
     def accion_botonEditar(self):
-        pass
+        self.datosCorrectos = True
+
+        self.ventanaDialogo.setWindowTitle("Formulario de edicion")
+
+        if(
+            self.contraseña.text() != self.contraseña2.text()
+        ):
+            self.datosCorrectos = False
+
+            self.mensaje.setText("Las contraseñas no coinciden")
+
+            self.ventanaDialogo.exec_()
+
+        if(
+                self.nombreCompleto.text() == ''
+                or self.usuario.text() == ''
+                or self.contraseña.text() == ''
+                or self.contraseña2.text() == ''
+                or self.documento.text() == ''
+                or self.correo.text() == ''
+                or self.pregunta1.text() == ''
+                or self.pregunta2.text() == ''
+                or self.pregunta3.text() == ''
+                or self.Respuestapregunta1.text() == ''
+                or self.Respuestapregunta1.text() == ''
+                or self.Respuestapregunta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            self.mensaje.setText("Debe seleccionar un usuario con un documento valido!")
+
+            self.ventanaDialogo.exec_()
+
+            self.accion_botonVolver()
+
+        if self.datosCorrectos:
+
+            self.file = open('datos/clientes.txt', 'rb')
+
+            usuarios = []
+
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+
+                # obtenemos del string una lista con 11 datos separados por ;
+                lista = linea.split(";")
+                # se para si ya no hay mas registros en el archivo
+                if linea == '':
+                    break
+                # creamos un objeto tipo cliente llamado u
+                u = Cliente(
+                    lista[0],
+                    lista[1],
+                    lista[2],
+                    lista[3],
+                    lista[4],
+                    lista[5],
+                    lista[6],
+                    lista[7],
+                    lista[8],
+                    lista[9],
+                    lista[10],
+                )
+
+                # METEMOS EL OBJETO EN LA LISTA DE USUARIOS
+                usuarios.append(u)
+
+            # cerramos el archivo
+            self.file.close()
+
+            existeDocumento = False
+
+            for u in usuarios:
+                if int(u.documento) == self.Documento:
+                    u.usuario = self.usuario.text()
+                    u.contraseña = self.contraseña.text()
+                    u.correo = self.correo.text()
+                    u.pregunta1 = self.pregunta1.text()
+                    u.respuesta1 = self.Respuestapregunta1.text()
+                    u.pregunta2 = self.pregunta2.text()
+                    u.respuesta2 = self.Respuestapregunta2.text()
+                    u.pregunta3 = self.pregunta3.text()
+                    u.respuesta3 = self.Respuestapregunta3.text()
+
+                    existeDocumento = True
+                    break
+
+            if (
+                    not existeDocumento
+            ):
+                # escribimos texto explicativo
+                self.mensaje.setText("No existe un usuario con este documento:\n"
+                                     + str(self.Documento))
+
+                # hacemos que la ventana de dialogo se vea
+                self.ventanaDialogo.exec_()
+
+            self.file = open('datos/clientes.txt', 'wb')
+
+            for u in usuarios:
+                self.file.write(bytes(u.nombreCompleto + ";"
+                                      + u.usuario + ";"
+                                      + u.contraseña + ";"
+                                      + u.documento + ";"
+                                      + u.correo + ";"
+                                      + u.pregunta1 + ";"
+                                      + u.respuesta1 + ";"
+                                      + u.pregunta2 + ";"
+                                      + u.respuesta2 + ";"
+                                      + u.pregunta3 + ";"
+                                      + u.respuesta3, encoding='UTF-8'))
+            self.file.close()
+
+            if(
+                existeDocumento
+            ):
+                self.mensaje.setText("Usuario actualizado correctamente!")
+
+                self.ventanaDialogo.exec_()
+
+                self.accion_botonLimpiar()
+
+                self.accion_botonVolver()
+
+            self.file = open('datos/clientes.txt', 'rb')
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+                print(linea)
+                if linea == '':
+                    break
+            self.file.close()
+
+
+
+
 
     def accion_botonLimpiar(self):
         self.nombreCompleto.setText('')
@@ -251,7 +385,29 @@ class Ventana4(QMainWindow):
         self.Respuestapregunta3.setText('')
 
     def accion_botonEliminar(self):
-        pass
+        self.datosCorrectos = True
+
+        if (
+                self.nombreCompleto.text() == ''
+                or self.usuario.text() == ''
+                or self.contraseña.text() == ''
+                or self.contraseña2.text() == ''
+                or self.documento.text() == ''
+                or self.correo.text() == ''
+                or self.pregunta1.text() == ''
+                or self.pregunta2.text() == ''
+                or self.pregunta3.text() == ''
+                or self.Respuestapregunta1.text() == ''
+                or self.Respuestapregunta1.text() == ''
+                or self.Respuestapregunta3.text() == ''
+        ):
+            self.datosCorrectos = False
+
+            self.mensaje.setText("Debe seleccionar un usuario con un documento valido!")
+
+            self.ventanaDialogo.exec_()
+
+            self.accion_botonVolver()
 
     def accion_botonVolver(self):
         self.hide()
