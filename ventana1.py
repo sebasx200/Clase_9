@@ -216,7 +216,7 @@ class Ventana1(QMainWindow):
 
         # ----------------------------------------------------------------------------
 
-        self.ventanaDialogo.setWindowTitle("Validar número de empleados")
+        self.ventanaDialogo.setWindowTitle("Validar número ")
         self.ventanaDialogo.setWindowModality(Qt.ApplicationModal)
 
         self.vertical = QVBoxLayout()

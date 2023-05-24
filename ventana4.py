@@ -387,6 +387,8 @@ class Ventana4(QMainWindow):
     def accion_botonEliminar(self):
         self.datosCorrectos = True
 
+        self.eliminar = False
+
         if (
                 self.nombreCompleto.text() == ''
                 or self.usuario.text() == ''
@@ -408,6 +410,121 @@ class Ventana4(QMainWindow):
             self.ventanaDialogo.exec_()
 
             self.accion_botonVolver()
+
+        if self.datosCorrectos:
+
+
+
+            # ------------------CONSTRUCCION DE LA VENTANA EMERGENTE--------------------
+
+            self.ventanaDialogoEliminar = QDialog(None, QtCore.Qt.WindowSystemMenuHint | QtCore.Qt.WindowTitleHint)
+            self.ventanaDialogoEliminar.resize(300, 150)
+
+            self.ventanaDialogoEliminar.setWindowModality(Qt.ApplicationModal)
+
+            self.verticalEliminar = QVBoxLayout()
+
+
+            self.mensajeEliminar = QLabel("¿Está seguro que desea eliminar este registro de usuario?")
+            self.mensajeEliminar.setStyleSheet("background-color: #6959CD; color: #E6E6FA; padding: 5px;"
+                                       "border-radius:10px")
+            self.mensajeEliminar.setFont(QFont("Comic Sans MS", 10))
+
+            self.verticalEliminar.addWidget(self.mensajeEliminar)
+
+            self.opcionesEliminar = QDialogButtonBox.Ok | QDialogButtonBox.Cancel
+            self.opcionesBox = QDialogButtonBox(self.opcionesEliminar)
+
+
+            self.opcionesBox.accepted.connect(self.ok_opcion)
+            self.opcionesBox.rejected.connect(self.cancel_opcion)
+
+
+
+            self.verticalEliminar.addWidget(self.opcionesBox)
+
+            self.ventanaDialogoEliminar.setLayout(self.verticalEliminar)
+
+            self.ventanaDialogoEliminar.exec_()
+
+        if self.eliminar:
+            self.file = open('datos/clientes.txt', 'rb')
+
+            usuarios = []
+
+            while self.file:
+                linea = self.file.readline().decode('UTF-8')
+
+                # obtenemos del string una lista con 11 datos separados por ;
+                lista = linea.split(";")
+                # se para si ya no hay mas registros en el archivo
+                if linea == '':
+                    break
+
+                # creamos un objeto tipo cliente llamado u
+                u = Cliente(
+                    lista[0],
+                    lista[1],
+                    lista[2],
+                    lista[3],
+                    lista[4],
+                    lista[5],
+                    lista[6],
+                    lista[7],
+                    lista[8],
+                    lista[9],
+                    lista[10],
+                )
+
+                # METEMOS EL OBJETO EN LA LISTA DE USUARIOS
+                usuarios.append(u)
+
+            # cerramos el archivo
+            self.file.close()
+
+            existeDocumento = False
+
+            for u in usuarios:
+                if int(u.documento) == self.Documento:
+                    usuarios.remove(u)
+                    existeDocumento = True
+                    break
+
+            self.file = open('datos/clientes.txt', 'wb')
+
+            for u in usuarios:
+                self.file.write(bytes(u.nombreCompleto + ";"
+                                      + u.usuario + ";"
+                                      + u.contraseña + ";"
+                                      + u.documento + ";"
+                                      + u.correo + ";"
+                                      + u.pregunta1 + ";"
+                                      + u.respuesta1 + ";"
+                                      + u.pregunta2 + ";"
+                                      + u.respuesta2 + ";"
+                                      + u.pregunta3 + ";"
+                                      + u.respuesta3, encoding='UTF-8'))
+            self.file.close()
+
+            if(
+                existeDocumento
+            ):
+                self.mensaje.setText("Usuario eliminado exitosamente!")
+
+                self.ventanaDialogo.exec_()
+
+                self.accion_botonLimpiar()
+
+                self.accion_botonVolver()
+
+
+    def ok_opcion(self):
+        self.ventanaDialogoEliminar.close()
+        self.eliminar = True
+
+    def cancel_opcion(self):
+        self.ventanaDialogoEliminar.close()
+
 
     def accion_botonVolver(self):
         self.hide()
