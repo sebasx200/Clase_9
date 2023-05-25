@@ -7,6 +7,7 @@ from PyQt5 import QtGui
 from ventana3 import Ventana3
 from cliente import Cliente
 import math
+from ventana4 import Ventana4
 
 
 class Ventana2(QMainWindow):
@@ -184,7 +185,10 @@ class Ventana2(QMainWindow):
         self.fondo.setLayout(self.vertical)
 
     def metodo_accionBotones(self, documento):
-        print(documento)
+        #print(documento)
+        self.hide()
+        self.ventana4 = Ventana4(self, documento)
+        self.ventana4.show()
 
     def metodo_botonVolver(self):
         self.hide()
