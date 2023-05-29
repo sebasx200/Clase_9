@@ -1,2 +1,4 @@
 Juan Jose David;jjbonz2023;202323200;7654321;jjbonz2023@gmail.com;nombre de mi padre;mario;años de mi perrita;9;cuantos hermanos tengo;6
 Juan Pablo Angel;juan05angel;1234;1015186914;juanpablo@gmail.com;nombre de papa;diego;edad;18;donde estudio;poli
+Ana rojas;anarr;2349;120567;anarojas06@gmail.com;edad de mi gato;2;trabajo;comfama;marca de carro;ferrari
+Juan Cano;Cano0988;3456;987654321;canoJuan@gmail.com;edad de mi perro;4;trabajo;exito;modelo de moto;mt09
